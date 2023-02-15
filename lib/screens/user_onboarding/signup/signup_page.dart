@@ -7,6 +7,7 @@ import 'package:expenser_app/ui/custom_widgets/custom_rounded_btn.dart';
 import 'package:expenser_app/ui/custom_widgets/custom_text_filed.dart';
 import 'package:expenser_app/ui/custom_widgets/ui_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 class SiginUp_Page extends StatefulWidget {
   const SiginUp_Page({Key? key}) : super(key: key);
@@ -86,6 +87,7 @@ class _SiginUp_PageState extends State<SiginUp_Page> {
                   micon: Icons.account_circle_outlined,
                   isPassword: false,
                   hint: 'Name Hare...'),
+
               SizedBox(height: 11,),
               CustomTextFiled(
                 errorMsg: 'Please Enter Your Email',
@@ -106,6 +108,18 @@ class _SiginUp_PageState extends State<SiginUp_Page> {
                   micon: Icons.lock_open_outlined,
                   isPassword: true,
                   hint: 'Password here'),
+              SizedBox(height: 7,),
+              FlutterPwValidator(
+                  controller: passController,
+                  minLength: 6,
+                  uppercaseCharCount: 1,
+                  numericCharCount: 3,
+                  specialCharCount: 1,
+                  width: 350,
+                  height: 100,
+                  onSuccess: (){},
+                  onFail: (){}
+              ),
               SizedBox(height: 11,),
               CustomTextFiled(
                   errorMsg: 'Chouse Your Confirm Passeord',
@@ -116,6 +130,18 @@ class _SiginUp_PageState extends State<SiginUp_Page> {
                   micon: Icons.lock_open_outlined,
                   isPassword: true,
                   hint: 'Confirm Password here'),
+              SizedBox(height: 7,),
+              FlutterPwValidator(
+                  controller: ConfirmPassController,
+                  minLength: 5,
+                  uppercaseCharCount: 1,
+                  numericCharCount: 3,
+                  specialCharCount: 1,
+                  width: 350,
+                  height: 100,
+                  onSuccess: (){},
+                  onFail: (){}
+              ),
 
               SizedBox(height: 25,),
               CustomRoundedBtn(callback: (){
