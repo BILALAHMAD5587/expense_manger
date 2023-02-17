@@ -6,6 +6,8 @@ import 'package:expenser_app/ui/custom_widgets/custom_text_filed.dart';
 import 'package:expenser_app/ui/custom_widgets/ui_helper.dart';
 import 'package:flutter/material.dart';
 
+import '../../home/home_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -147,16 +149,11 @@ class _LoginPageState extends State<LoginPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Processing Data'))
                   );
-                  /*Fluttertoast.showToast(
-                      msg: 'PROCESSING DATA',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.redAccent,
-                    fontSize: 16.0
-                  );*/
                 }
+
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(),));
+
+
               }, text: "Login"),
               SizedBox(
                 height: 12,
