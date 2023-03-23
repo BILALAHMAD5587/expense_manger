@@ -1,5 +1,6 @@
 import 'package:expenser_app/screens/home/home_page.dart';
 import 'package:expenser_app/screens/slpash/splash_page.dart';
+import 'package:expenser_app/screens/user_onboarding/signup/signup_page.dart';
 import 'package:expenser_app/ui/custom_widgets/ui_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: createMaterialColor(MyColors.bgBColor),
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: MyColors.bgWColor,
           canvasColor: MyColors.bgBColor,
           shadowColor: MyColors.LighttextWColor),
-      home: HomePage(),
+      home: SiginUp_Page(),
     );
   }
 }
