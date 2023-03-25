@@ -38,7 +38,39 @@ class FragTransaction extends StatelessWidget {
               Expanded(
                   flex: 7,
                   child: Container(
-                    color: Colors.green.shade200,
+                    //color: Colors.green.shade200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Spent this week',
+                            style: mTextStylr12(
+                                mColor: isLight
+                                    ? MyColors.secoundryBColor
+                                    : MyColors.secondryWColor)),
+                        RichText(
+                            text: TextSpan(children: [
+                          TextSpan(
+                              text: '\$ ',
+                              style: mTextStylr26(
+                                  mColor: isLight
+                                  ? MyColors.secoundryBColor
+                                  : MyColors.secondryWColor,
+                                  fontweight: FontWeight.bold)),
+                          TextSpan(
+                              text: '9999',
+                              style: mTextStylr52(
+                                  mColor: isLight
+                                  ? MyColors.secoundryBColor
+                                  : MyColors.secondryWColor,
+                                  fontweight: FontWeight.bold)),
+                          TextSpan(
+                              text: '.50',
+                              style: mTextStylr26(mColor: isLight
+                              ? MyColors.secoundryBColor
+                              : MyColors.secondryWColor))
+                        ]))
+                      ],
+                    ),
                   )),
               Expanded(
                   flex: 11,
@@ -66,15 +98,15 @@ class FragTransaction extends StatelessWidget {
                   dayTransDetails['day'],
                   style: mTextStylr12(
                       mColor: isLight
-                          ? MyColors.secondryWColor
-                          : MyColors.secoundryBColor),
+                          ? MyColors.secoundryBColor
+                          : MyColors.secondryWColor),
                 ),
                 Text(
                   '\$ ${dayTransDetails['amt']}',
                   style: mTextStylr12(
                       mColor: isLight
-                          ? MyColors.secondryWColor
-                          : MyColors.secoundryBColor),
+                          ? MyColors.secoundryBColor
+                          : MyColors.secondryWColor),
                 )
               ],
             ),
