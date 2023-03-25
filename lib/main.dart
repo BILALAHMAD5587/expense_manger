@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: MyColors.bgWColor,
           canvasColor: MyColors.bgBColor,
           shadowColor: MyColors.LighttextWColor),
-      home: SiginUp_Page(),
+      home: HomePage(),
     );
   }
 }
