@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class CustomRoundedBtn extends StatelessWidget {
   VoidCallback callback;
   String text;
+  Widget? mchild;
 
-  CustomRoundedBtn({required this.callback, required this.text});
+  CustomRoundedBtn({required this.callback, required this.text, this.mchild});
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +15,17 @@ class CustomRoundedBtn extends StatelessWidget {
       height: MediaQuery.of(context).size.height*0.09,
       child: ElevatedButton(
         onPressed: callback,
-        child: Text(
-          text,
-          style: mTextStylr16(
-              mColor: Theme.of(context).backgroundColor,
-              fontweight: FontWeight.w800),
-        ),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(21)
           ),
           primary: Theme.of(context).brightness==Brightness.light ? MyColors.secoundryBColor : MyColors.secondryWColor,
+        ),
+        child: mchild ?? Text(
+          text,
+          style: mTextStylr16(
+              mColor: Theme.of(context).backgroundColor,
+              fontweight: FontWeight.w800),
         ),
       ),
     );

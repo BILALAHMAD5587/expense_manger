@@ -1,4 +1,5 @@
 import 'package:expenser_app/ui/constant.dart';
+import 'package:expenser_app/ui/custom_widgets/custom_rounded_btn.dart';
 import 'package:expenser_app/ui/custom_widgets/ui_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -12,34 +13,66 @@ class FragTransaction extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
-          body: portraitUI()),
+          body: MediaQuery.of(context).orientation == Orientation.portrait
+              ? portraitUI()
+              : landscapeUI()),
     );
   }
 
-  Widget landscapeUI(){
-    return Container();
-  }
-
-
-  Widget portraitUI(){
-    return Column(
+  Widget landscapeUI() {
+    return Row(
       children: [
         Expanded(
             flex: 1,
-            child: addTransactionUI()),
-        Expanded(
-            flex: 7,
-            child: totalBalanceUI()),
-        Expanded(
-            flex: 11,
-            child: allTransactionUI()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                totalBalanceUI(),
+                SizedBox(
+                  height: 21,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 50,
+                  child: CustomRoundedBtn(
+                    callback: () {},
+                    text: '',
+                    mchild: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add,
+                            color: isLight
+                                ? MyColors.bgWColor
+                                : MyColors.bgBColor),
+                        Text(
+                          'Add Expense',
+                          style: mTextStylr16(
+                              mColor: isLight
+                                  ? MyColors.bgWColor
+                                  : MyColors.bgBColor),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            )),
+        Expanded(flex: 1, child: allTransactionUI())
       ],
     );
   }
 
+  Widget portraitUI() {
+    return Column(
+      children: [
+        Expanded(flex: 1, child: addTransactionUI()),
+        Expanded(flex: 7, child: totalBalanceUI()),
+        Expanded(flex: 11, child: allTransactionUI()),
+      ],
+    );
+  }
 
-
-  Widget dayWiseTrasanctionItem(Map dayTransDetails) {
+  Widget dayWiseTransactiodItem(Map dayTransDetails) {
     return Padding(
       padding: const EdgeInsets.only(),
       child: Column(
@@ -115,7 +148,7 @@ class FragTransaction extends StatelessWidget {
     );
   }
 
-  Widget addTransactionUI(){
+  Widget addTransactionUI() {
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -123,12 +156,10 @@ class FragTransaction extends StatelessWidget {
         child: Align(
           alignment: Alignment.centerRight,
           child: CircleAvatar(
-            backgroundColor:
-            isLight ? MyColors.bgBColor : MyColors.bgWColor,
+            backgroundColor: isLight ? MyColors.bgBColor : MyColors.bgWColor,
             child: Icon(
               Icons.add,
-              color:
-              isLight ? MyColors.bgWColor : MyColors.bgBColor,
+              color: isLight ? MyColors.bgWColor : MyColors.bgBColor,
               size: 21,
             ),
           ),
@@ -137,8 +168,7 @@ class FragTransaction extends StatelessWidget {
     );
   }
 
-  Widget totalBalanceUI(){
-
+  Widget totalBalanceUI() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -149,38 +179,36 @@ class FragTransaction extends StatelessWidget {
                     : MyColors.secondryWColor)),
         RichText(
             text: TextSpan(children: [
-              TextSpan(
-                  text: '\$ ',
-                  style: mTextStylr26(
-                      mColor: isLight
-                          ? MyColors.secoundryBColor
-                          : MyColors.secondryWColor,
-                      fontweight: FontWeight.bold)),
-              TextSpan(
-                  text: '9999',
-                  style: mTextStylr52(
-                      mColor: isLight
-                          ? MyColors.secoundryBColor
-                          : MyColors.secondryWColor,
-                      fontweight: FontWeight.bold)),
-              TextSpan(
-                  text: '.50',
-                  style: mTextStylr26(mColor: isLight
+          TextSpan(
+              text: '\$ ',
+              style: mTextStylr26(
+                  mColor: isLight
+                      ? MyColors.secoundryBColor
+                      : MyColors.secondryWColor,
+                  fontweight: FontWeight.bold)),
+          TextSpan(
+              text: '9999',
+              style: mTextStylr52(
+                  mColor: isLight
+                      ? MyColors.secoundryBColor
+                      : MyColors.secondryWColor,
+                  fontweight: FontWeight.bold)),
+          TextSpan(
+              text: '.50',
+              style: mTextStylr26(
+                  mColor: isLight
                       ? MyColors.secoundryBColor
                       : MyColors.secondryWColor))
-            ]))
+        ]))
       ],
     );
   }
 
-  Widget allTransactionUI(){
+  Widget allTransactionUI() {
     return ListView.builder(
       itemCount: Constants.arrTransaction.length,
       itemBuilder: (context, index) =>
-          dayWiseTrasanctionItem(Constants.arrTransaction[index]),
+          dayWiseTransactiodItem(Constants.arrTransaction[index]),
     );
   }
-
-
-
 }
