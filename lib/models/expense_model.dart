@@ -5,6 +5,7 @@ class ExpenseModel {
   String? title;
   String? desc;
   double? amt;
+  double? bal;
   int? catId;
   String? expenseType;
   String? time;
@@ -14,6 +15,7 @@ class ExpenseModel {
       this.title,
       this.desc,
       this.amt,
+      this.bal,
       this.catId,
       this.expenseType,
       this.time});
@@ -24,6 +26,7 @@ class ExpenseModel {
         title: map[DBHelper.EXPENSE_COLUM_TITLE],
         desc: map[DBHelper.EXPENSE_COLUM_DESC],
         amt: map[DBHelper.EXPENSE_COLUM_AMT],
+        bal: map[DBHelper.EXPENSE_COLUM_BAL],
         catId: map[DBHelper.EXPENSE_COLUM_CAT_ID],
         expenseType: map[DBHelper.EXPENSE_COLUM_ECPENSE_TYPE],
         time: map[DBHelper.EXPENSE_COLUM_TIME]);
@@ -31,12 +34,13 @@ class ExpenseModel {
 
   Map<String, dynamic> toMap() {
     return {
-      DBHelper.EXPENSE_COLUM_TITLE : title,
-      DBHelper.EXPENSE_COLUM_DESC : desc,
-      DBHelper.EXPENSE_COLUM_AMT : amt,
-      DBHelper.EXPENSE_COLUM_CAT_ID : catId,
-      DBHelper.EXPENSE_COLUM_ECPENSE_TYPE : expenseType,
-      DBHelper.EXPENSE_COLUM_TIME : time
+      DBHelper.EXPENSE_COLUM_TITLE: title,
+      DBHelper.EXPENSE_COLUM_DESC: desc,
+      DBHelper.EXPENSE_COLUM_AMT: amt,
+      DBHelper.EXPENSE_COLUM_BAL: bal,
+      DBHelper.EXPENSE_COLUM_CAT_ID: catId,
+      DBHelper.EXPENSE_COLUM_ECPENSE_TYPE: expenseType,
+      DBHelper.EXPENSE_COLUM_TIME: time
     };
   }
 }

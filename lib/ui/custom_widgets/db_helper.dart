@@ -10,6 +10,7 @@ class DBHelper {
   static const String EXPENSE_COLUM_TITLE = 'title';
   static const String EXPENSE_COLUM_DESC = 'desc';
   static const String EXPENSE_COLUM_AMT = 'amount';
+  static const String EXPENSE_COLUM_BAL = 'balance';
   static const String EXPENSE_COLUM_CAT_ID = 'cat_id';
   static const String EXPENSE_COLUM_ECPENSE_TYPE = 'expense_type';
   static const String EXPENSE_COLUM_TIME = 'time';
@@ -33,17 +34,18 @@ class DBHelper {
            '$EXPENSE_COLUM_ID integer primary key autoincrement, '
            '$EXPENSE_COLUM_TITLE text, '
            '$EXPENSE_COLUM_DESC text, '
-           '$EXPENSE_COLUM_AMT integer,'
+           '$EXPENSE_COLUM_AMT real,'
+           '$EXPENSE_COLUM_BAL real,'
            '$EXPENSE_COLUM_CAT_ID integer,'
            '$EXPENSE_COLUM_ECPENSE_TYPE integer,'
            '$EXPENSE_COLUM_TIME text)');
 
 
        //Creating Categary table
-       db.execute('create table $CAT_TABLE ( '
-           '$CAT_COLUM_ID integer primary key autoincrement, '
+       db.execute('create table $CAT_TABLE '
+           '($CAT_COLUM_ID integer primary key autoincrement, '
            '$CAT_COLUM_NAME text, '
-           '$CAT_COULM_PATH text,)');
+           '$CAT_COULM_PATH text)');
 
 
        db.insert(CAT_TABLE, CatModel(name: 'Travel', imgPath: 'assets/images/expense_type/travel.png').toMap());
@@ -105,6 +107,19 @@ class DBHelper {
 
     return arrExpense;
   }
+
+  Future<List<CatModel>> fetchAllCat() async{
+    var myDB = await openDB();
+    List<Map<String, dynamic>> data;
+    data = await myDB.query(CAT_TABLE);
+    List<CatModel> arrCat = [];
+    for(Map<String, dynamic> category in data){
+      arrCat.add(CatModel.formMap(category));
+    }
+    return arrCat;
+  }
+
+
 
 
 }

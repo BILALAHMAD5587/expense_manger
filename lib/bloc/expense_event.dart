@@ -10,6 +10,12 @@ class NewExpenseEvent extends ExpenseEvent{
   NewExpenseEvent(this.newExpense);
 }
 
+
+
+
+
+
+
 class FetchExpenseEvent extends ExpenseEvent{}
 
 
