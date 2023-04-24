@@ -25,6 +25,11 @@ class _FragTransactionState extends State<FragTransaction> {
 
   List<DateWiseExpenseModel> arrData = [];
 
+  var frmt = DateFormat.y();
+  var frmt2 = DateFormat.MMMMd();
+  var frmt3 = DateFormat.MMMM();
+  var frmt4 = DateFormat.d();
+
   @override
   void initState() {
     super.initState();
@@ -34,24 +39,44 @@ class _FragTransactionState extends State<FragTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    isLight = Theme.of(context).brightness == Brightness.light;
+    isLight = Theme
+        .of(context)
+        .brightness == Brightness.light;
     return SafeArea(
         child: Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme
+                .of(context)
+                .colorScheme.background,
             body: BlocBuilder<ExpenseBloc, ExpenseState>(
               builder: (ctx, state) {
                 if (state is ExpenseLoadingState) {
                   return CircularProgressIndicator();
                 } else if (state is ExpenseLoadedState) {
-
                   if (state.arrExpense.isNotEmpty) {
+                    arrExpense = state.arrExpense;
 
-                    filterExpensesDateWise();
+                    List<String> arrUniqueDates = [];
 
-                    //arrExpense = state.arrExpense;
+                    for (ExpenseModel expense in arrExpense) {
+                      var date = DateTime.parse(expense.time!);
 
-                    return MediaQuery.of(context).orientation ==
-                            Orientation.portrait
+                      var eachDate =
+                          '${date.year}-${date.month.toString().length==1?'0${date.month}' : '${date.month}'}-${date.day}';
+                      print(eachDate);
+
+                      if (arrUniqueDates.contains(eachDate)) {
+                        arrUniqueDates.add(eachDate);
+                      }
+                    }
+                    //print(arrUniqueDates);
+
+                    filterExpensesDateWise(arrUniqueDates);
+
+
+                    return MediaQuery
+                        .of(context)
+                        .orientation ==
+                        Orientation.portrait
                         ? portraitUI(context, arrData)
                         : landscapeUI();
                   } else {
@@ -67,7 +92,9 @@ class _FragTransactionState extends State<FragTransaction> {
                                   fontweight: FontWeight.w500),
                             ),
                           ),
-                          SizedBox(height: 21,),
+                          SizedBox(
+                            height: 21,
+                          ),
                           Align(
                             alignment: Alignment.center,
                             child: InkWell(
@@ -75,16 +102,24 @@ class _FragTransactionState extends State<FragTransaction> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AddExpensePage(arrExpense.isNotEmpty
-                                          ? arrExpense[arrExpense.length - 1].bal!
-                                          : 0.0),
+                                      builder: (context) =>
+                                          AddExpensePage(
+                                              arrExpense.isNotEmpty
+                                                  ? arrExpense[
+                                              arrExpense.length - 1]
+                                                  .bal!
+                                                  : 0.0),
                                     ));
                               },
                               child: CircleAvatar(
-                                backgroundColor: isLight ? MyColors.bgBColor : MyColors.bgWColor,
+                                backgroundColor: isLight
+                                    ? MyColors.bgBColor
+                                    : MyColors.bgWColor,
                                 child: Icon(
                                   Icons.add,
-                                  color: isLight ? MyColors.bgWColor : MyColors.bgBColor,
+                                  color: isLight
+                                      ? MyColors.bgWColor
+                                      : MyColors.bgBColor,
                                   size: 21,
                                 ),
                               ),
@@ -103,72 +138,85 @@ class _FragTransactionState extends State<FragTransaction> {
   }
 
 
-  void filterExpensesDateWise(){
+  void filterExpensesDateWise(List<String> uniqueDates) {
+    /*var frmt = DateFormat.y();
+    var frmt2 = DateFormat.MMMMd();
+
+    var todayMonthYear =
+        '${frmt.format(DateTime.now())} ${frmt2.format(DateTime.now())}';*/
+
     /*var today = DateTime.now().day;
     var month = DateTime.now().month;
     var year = DateTime.now().year;*/
-
-    var frmt = DateFormat.y();
-    var frmt2 = DateFormat.MMMMd();
-
-    var todayMonthYear = '${frmt.format(DateTime.now())} ${frmt2.format(DateTime.now())}';
-
-    List<ExpenseModel> arrTransaction = [];
     /*arrExpense.where((expense) {
       if(expense.time!.contains(todayMonthYear)){
         arrTransaction.add(expense);
       }
       return true;
     });*/
-
-
-    for(ExpenseModel expense in arrExpense){
-      if(expense.time!.contains(todayMonthYear)){
-        arrTransaction.add(expense);
-      }
-    }
-
-    var totalDayAmt = 0.0;
-
-    for(ExpenseModel trans in arrTransaction){
-      if(trans.expenseType=='Debit'){
-        totalDayAmt += trans.amt!;
-      } else {
-        totalDayAmt -=trans.amt!;
-      }
-    }
-
-
-    arrData.add(DateWiseExpenseModel(
-        Date: 'Toady',
-        amt: totalDayAmt.toString(),
-        arrExpenses: arrTransaction));
-
-
-    arrExpense.removeWhere((expense) {
-      if(expense.time!.contains(todayMonthYear)){
+    /*arrExpense.removeWhere((expense) {
+      if (expense.time!.contains(todayMonthYear)) {
         return true;
       } else {
         return false;
       }
-    });
+    });*/
 
-    var totalOtherAmt = 0.0;
-    for(ExpenseModel expense in arrExpense){
-      if(expense.expenseType=='Debit'){
+    /*var totalOtherAmt = 0.0;
+    for (ExpenseModel expense in arrExpense) {
+      if (expense.expenseType == 'Debit') {
         totalOtherAmt += expense.amt!;
       } else {
         totalOtherAmt -= expense.amt!;
       }
+    }*/
+
+    /*arrData.add(DateWiseExpenseModel(
+        Date: 'Prev', amt: totalDayAmt.toString(), arrExpenses: arrExpense));*/
+
+    arrData.clear();
+
+
+    for (String date in uniqueDates) {
+      List<ExpenseModel> eachDayTransaction = [];
+
+
+      for (ExpenseModel expense in arrExpense) {
+        print(expense.time);
+        print(date);
+        if (expense.time!.contains(date)) {
+          eachDayTransaction.add(expense);
+        }
+      }
+
+      var eachDayAmt = 0.0;
+
+      for (ExpenseModel trans in eachDayTransaction) {
+        if (trans.expenseType == 'Debit') {
+          eachDayAmt += trans.amt!;
+        } else {
+          eachDayAmt -= trans.amt!;
+        }
+      }
+
+      var todayDate =
+          '${frmt.format(DateTime.now())} ${frmt2.format(DateTime.now())}';
+
+      var YesterdayDate =
+          '${frmt.format(DateTime.now())} ${frmt3.format(DateTime.now())} ${int
+          .parse(frmt4.format(DateTime.now())) - 1}';
+
+      if (date == todayDate) {
+        date = 'Today';
+      } else if (date==YesterdayDate) {
+        date = 'Yesterday';
+      }
+
+      arrData.add(DateWiseExpenseModel(
+          Date: date,
+          amt: eachDayAmt.toString(),
+          arrExpenses: eachDayTransaction));
     }
-
-
-    arrData.add(DateWiseExpenseModel(
-        Date: 'Prev',
-        amt: totalDayAmt.toString(),
-        arrExpenses: arrExpense));
-
-
   }
 
   Widget landscapeUI() {
@@ -214,19 +262,18 @@ class _FragTransactionState extends State<FragTransaction> {
     );
   }
 
-  Widget portraitUI(BuildContext context, List<DateWiseExpenseModel> arrExpense) {
+  Widget portraitUI(BuildContext context,
+      List<DateWiseExpenseModel> arrDayWiseExpense) {
     return Column(
       children: [
         Expanded(flex: 1, child: addTransactionUI(context)),
         Expanded(flex: 7, child: totalBalanceUI()),
-        Expanded(flex: 11, child: allTransactionUI(arrExpense)),
+        Expanded(flex: 11, child: allTransactionUI(arrDayWiseExpense)),
       ],
     );
   }
 
-  Widget dayWiseTransactiodItem(
-    Map dayTransDetails,
-  ) {
+  Widget dayWiseTransactiodItem(Map dayTransDetails,) {
     return Padding(
       padding: const EdgeInsets.only(),
       child: Column(
@@ -256,11 +303,15 @@ class _FragTransactionState extends State<FragTransaction> {
           BlocBuilder<ExpenseTypeBloc, ExpenseTypeState>(
             builder: (context, state) {
               if (state is ExpenseTypeLoadedState) {
+                print(dayTransDetails);
                 return ListView.builder(
                   itemCount: dayTransDetails['arrExpenses'].length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) =>
-                      detailTransactionItem(dayTransDetails['arrExpenses'][index], state.arrExpenseType),
+                      detailTransactionItem(
+                          (dayTransDetails['arrExpenses'][index] as ExpenseModel)
+                              .toMap(),
+                          state.arrExpenseType),
                 );
               } else if (state is ExpenseTypeLoadingState) {
                 return CircularProgressIndicator();
@@ -277,8 +328,8 @@ class _FragTransactionState extends State<FragTransaction> {
     );
   }
 
-  Widget detailTransactionItem(
-      Map detailedTrans, List<CatModel> arrExpenseType) {
+  Widget detailTransactionItem(Map detailedTrans,
+      List<CatModel> arrExpenseType) {
     var catImgPath = '';
     // arrExpenseType.map((cat){
     //   if(cat.catId== detailedTrans[DBHelper.EXPENSE_COLUM_CAT_ID]){
@@ -336,9 +387,10 @@ class _FragTransactionState extends State<FragTransaction> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddExpensePage(arrExpense.isNotEmpty
-                        ? arrExpense[arrExpense.length - 1].bal!
-                        : 0.0),
+                    builder: (context) =>
+                        AddExpensePage(arrExpense.isNotEmpty
+                            ? arrExpense[arrExpense.length - 1].bal!
+                            : 0.0),
                   ));
             },
             child: CircleAvatar(
@@ -366,36 +418,37 @@ class _FragTransactionState extends State<FragTransaction> {
                     : MyColors.secondryWColor)),
         RichText(
             text: TextSpan(children: [
-          TextSpan(
-              text: '\$ ',
-              style: mTextStylr26(
-                  mColor: isLight
-                      ? MyColors.secoundryBColor
-                      : MyColors.secondryWColor,
-                  fontweight: FontWeight.bold)),
-          TextSpan(
-              text: '9999',
-              style: mTextStylr52(
-                  mColor: isLight
-                      ? MyColors.secoundryBColor
-                      : MyColors.secondryWColor,
-                  fontweight: FontWeight.bold)),
-          TextSpan(
-              text: '.50',
-              style: mTextStylr26(
-                  mColor: isLight
-                      ? MyColors.secoundryBColor
-                      : MyColors.secondryWColor))
-        ]))
+              TextSpan(
+                  text: '\$ ',
+                  style: mTextStylr26(
+                      mColor: isLight
+                          ? MyColors.secoundryBColor
+                          : MyColors.secondryWColor,
+                      fontweight: FontWeight.bold)),
+              TextSpan(
+                  text: '9999',
+                  style: mTextStylr52(
+                      mColor: isLight
+                          ? MyColors.secoundryBColor
+                          : MyColors.secondryWColor,
+                      fontweight: FontWeight.bold)),
+              TextSpan(
+                  text: '.50',
+                  style: mTextStylr26(
+                      mColor: isLight
+                          ? MyColors.secoundryBColor
+                          : MyColors.secondryWColor))
+            ]))
       ],
     );
   }
 
-  Widget allTransactionUI(arrExpense) {
+  Widget allTransactionUI(arrDayWiseExpense) {
     return ListView.builder(
-      itemCount: arrExpense.length,
+      itemCount: arrDayWiseExpense.length,
       itemBuilder: (context, index) =>
-          dayWiseTransactiodItem((arrExpense[index] as DateWiseExpenseModel).toMap()),
+          dayWiseTransactiodItem(
+              (arrDayWiseExpense[index] as DateWiseExpenseModel).toMap()),
     );
   }
 }

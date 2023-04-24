@@ -227,12 +227,12 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       },
                       child: CustomRoundedBtn(
                           callback: () {
-                            var frmt = DateFormat.y();
+                            /*var frmt = DateFormat.y();
                             var frmt2 = DateFormat.MMMMd();
                             var frmt3 = DateFormat.Hms();
                             var currentTime =
                                 '${frmt.format(DateTime.now())} ${frmt2.format(DateTime.now())} '
-                                '${frmt3.format(DateTime.now())}';
+                                '${frmt3.format(DateTime.now())}';*/
                             var newBalance = 0.0;
 
                             if(defaultDropDownValue==arrTransType[0]){
@@ -256,7 +256,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                                       expenseType: defaultDropDownValue,
                                       catId:
                                           arrExpenseType[_selectedIndex].catId,
-                                      time: currentTime)));
+                                      time: DateTime.now().toString())));
                             }
                           },
                           text: 'Add'),
